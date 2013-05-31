@@ -1,7 +1,7 @@
 % Defino el dominio
 domains
 
-    % Represento a la reina por medio de su posición en la columna
+    % Represento a la reina por medio de su posicion en la columna
     reina=integer
     
     % El tablero es una lista de n elementos con los naturales de 1 a n 
@@ -13,40 +13,41 @@ domains
 % Defino los predicados
 predicates
     
-    % Devuelve un tablero solución del problema de la amenaza entre las reinas de 
-    % un tablero de ajedrez de tamaño dimension [reina].
+    % Devuelve un tablero solucion del problema de la amenaza entre las reinas de 
+    % un tablero de ajedrez de tamanio dimension [reina].
     nondeterm nreinas(reina, tablero).
     
-    % Verifica si el tablero solución es una lista de elementos que contiene los naturales 
+    % Verifica si el tablero solucion es una lista de elementos que contiene los naturales 
     % comprendidos entre 1 y dimension del mismo [reina], ambos inclusive.
     nondeterm generarTablero(reina, tablero).
     
-    % Verifica si la primer tabla es una permutación de los elementos de la segunda.
+    % Verifica si la primer tabla es una permutacion de los elementos de la segunda.
     nondeterm permutar(tablero, tablero).
     
     % Indica si existe alguna reina que amenace a otra.
     nondeterm buenTablero(tablero).
     
-    % Verifica si la reina está en la primer tabla y
+    % Verifica si la reina esta en la primer tabla y
     % si la segunda tabla es la primer lista sin la reina.
     nondeterm seleccionar(tablero, reina, tablero).
     
     % Indica si una reina ubicada en la columna [reina] y fila n del tablero amenaza
-    % a las demás reinas del tablero.
+    % a las demas reinas del tablero.
     nondeterm amenaza(reina, tablero).
     nondeterm amenaza(reina, reina, tablero).
     
 clauses
 
-    % Genera un tablero de tamaño dimensión, permuta y obtiene una solucion al problema de las 8 reinas.
+    % Genera un tablero de tamanio dimensio
+    n, permuta y obtiene una solucion al problema de las 8 reinas.
     nreinas(Dimension,Solucion):- generarTablero(Dimension,Tablero), permutar(Tablero,Solucion), buenTablero(Solucion).
     
-    % Caso en que el tablero tenga dimension 0, el tablero es vacío.
+    % Caso en que el tablero tenga dimension 0, el tablero es vacio.
     generarTablero(0,[]).
     % Caso en que el tablero tenga una dimension > 0, genera filas y columnas.
     generarTablero(Dimension,[Dimension|Columnas]):- DimensionAnterior = Dimension - 1, DimensionAnterior >= 0, generarTablero(DimensionAnterior,Columnas).
     
-    % Permutación de un tablero vacío, es un tablero vacío.
+    % Permutacion de un tablero vacio, es un tablero vacio.
     permutar([],[]).
     % Se selecciona el primer valor de la lista y se permuta con la cola.
     permutar(Tablero,[SolCabecera|SolCola]):- seleccionar(Tablero,SolCabecera,R), permutar(R,SolCola).
@@ -58,7 +59,7 @@ clauses
     % las colas de las listas seleccionan a X.
     seleccionar([C|R],X,[C|Y]):- seleccionar(R,X,Y).
     
-    % Tablero vacío es considerado buen tablero porque no se amenazan reinas.
+    % Tablero vacio es considerado buen tablero porque no se amenazan reinas.
     buenTablero([]).
     % Un buen tablero se considera si no hay reina que amenace a otras.
     buenTablero([C|R]):- not(amenaza(C,R)), buenTablero(R).
@@ -68,13 +69,13 @@ clauses
     % Incrementa la Profundidad y verifica la amenaza sobre la reina.
     amenaza(X,Profundidad,[_|R]):- ProfundidadSiguiente = Profundidad + 1, amenaza(X,ProfundidadSiguiente,R).
     
-    % En caso que la lista sea vacía, no hay amenaza.
+    % En caso que la lista sea vacia, no hay amenaza.
     amenaza(_,[]):- fail.
-    % Verifico la amenaza entre las listas a partír de la posición 1.
+    % Verifico la amenaza entre las listas a partir de la posicion 1.
     amenaza(X,Y):- amenaza(X,1,Y).
     
 
 goal
 
-    % Ejecución del problema de las 8 reinas.
+    % Ejecucion del problema de las 8 reinas.
     nreinas(8, Solucion).
