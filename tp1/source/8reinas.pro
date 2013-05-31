@@ -51,9 +51,11 @@ clauses
     % Se selecciona el primer valor de la lista y se permuta con la cola.
     permutar(Tablero,[SolCabecera|SolCola]):- seleccionar(Tablero,SolCabecera,R), permutar(R,SolCola).
     
-    % Verifica si X es el primer elemento de la primer lista y R siendo la cola de la primer lista es igual a la segunda lista
+    % Verifica si X es el primer elemento de la primer lista y R siendo 
+    % la cola de la primer lista es igual a la segunda lista.
     seleccionar([X|R],X,R).
-    % Verifica si los primeros elementos de las listas son iguales y verifica si las colas de las listas seleccionan a X
+    % Verifica si los primeros elementos de las listas son iguales y verifica si 
+    % las colas de las listas seleccionan a X.
     seleccionar([C|R],X,[C|Y]):- seleccionar(R,X,Y).
     
     % Tablero vacío es considerado buen tablero porque no se amenazan reinas.
@@ -61,10 +63,14 @@ clauses
     % Un buen tablero se considera si no hay reina que amenace a otras.
     buenTablero([C|R]):- not(amenaza(C,R)), buenTablero(R).
 
+    % Verifica si X es la cabecera + Profundidad o X es la cabecera - Profundidad o X es la cabecera.
     amenaza(X,Profundidad,[C|_]):- X = C+Profundidad; X = C-Profundidad; X = C.
+    % Incrementa la Profundidad y verifica la amenaza sobre la reina.
     amenaza(X,Profundidad,[_|R]):- ProfundidadSiguiente = Profundidad + 1, amenaza(X,ProfundidadSiguiente,R).
     
+    % En caso que la lista sea vacía, no hay amenaza.
     amenaza(_,[]):- fail.
+    % Verifico la amenaza entre las listas a partír de la posición 1.
     amenaza(X,Y):- amenaza(X,1,Y).
     
 
